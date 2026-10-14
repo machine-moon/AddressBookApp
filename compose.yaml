@@ -1,0 +1,31 @@
+services:
+  app:
+    image: ghcr.io/machine-moon/addressbookapp:latest
+    container_name: addressbook
+    restart: unless-stopped
+    #ports:
+    #  - "4806:8080"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    dns:
+      - 10.11.1.10
+    networks:
+      frontend:
+        ipv4_address: 10.11.1.99
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_LABEL_ENABLE: "true"
+      WATCHTOWER_POLL_INTERVAL: "300"
+    dns:
+      - 10.11.1.10
+    networks:
+      frontend:
+        ipv4_address: 10.11.1.98
+networks:
+  frontend:
+    external: true

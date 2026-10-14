@@ -1,3 +1,7 @@
 # AddressBookApp
 
-[![Java CI with Maven](https://github.com/machine-moon/AddressBookApp/actions/workflows/maven.yml/badge.svg)](https://github.com/machine-moon/AddressBookApp/actions/workflows/maven.yml)
+Tarek Ibrahim
+
+**Deployed at:** https://addressbook.tarekibrahim.net
+
+[![CI Status](https://github.com/machine-moon/AddressBookApp/actions/workflows/ci.yml/badge.svg)](https://github.com/machine-moon/AddressBookApp/actions/workflows/ci.yml)
