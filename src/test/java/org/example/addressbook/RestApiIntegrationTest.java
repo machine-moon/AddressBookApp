@@ -22,8 +22,8 @@ class RestApiIntegrationTest {
 
 	@Test
 	void createBuddyThenListBuddies() {
-		createBuddy("Alice", "613-555-0101");
-		createBuddy("Bob", "613-555-0102");
+		createBuddy("Alice", "613-555-0101", "1 First St");
+		createBuddy("Bob", "613-555-0102", "2 Second St");
 
 		client.get().uri("/buddies")
 				.exchange()
@@ -32,14 +32,15 @@ class RestApiIntegrationTest {
 				.jsonPath("$.length()").isEqualTo(2)
 				.jsonPath("$[0].name").isEqualTo("Alice")
 				.jsonPath("$[0].phoneNumber").isEqualTo("613-555-0101")
+				.jsonPath("$[0].address").isEqualTo("1 First St")
 				.jsonPath("$[1].name").isEqualTo("Bob");
 	}
 
 	@Test
 	void buildAddressBookAndRenderIt() {
-		long alice = createBuddy("Alice", "613-555-0101");
-		long bob = createBuddy("Bob", "613-555-0102");
-		long charlie = createBuddy("Charlie", "613-555-0103");
+		long alice = createBuddy("Alice", "613-555-0101", "1 First St");
+		long bob = createBuddy("Bob", "613-555-0102", "2 Second St");
+		long charlie = createBuddy("Charlie", "613-555-0103", "3 Third St");
 		long addressBook = createAddressBook();
 
 		addBuddy(addressBook, alice);
@@ -52,6 +53,7 @@ class RestApiIntegrationTest {
 				.expectBody()
 				.jsonPath("$.length()").isEqualTo(3)
 				.jsonPath("$[0].name").isEqualTo("Alice")
+				.jsonPath("$[0].address").isEqualTo("1 First St")
 				.jsonPath("$[1].name").isEqualTo("Bob")
 				.jsonPath("$[2].name").isEqualTo("Charlie");
 
@@ -70,10 +72,10 @@ class RestApiIntegrationTest {
 				.expectStatus().is5xxServerError();
 	}
 
-	private long createBuddy(String name, String phoneNumber) {
+	private long createBuddy(String name, String phoneNumber, String address) {
 		Map<?, ?> body = client.post().uri("/buddies")
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(new BuddyInfo(name, phoneNumber))
+				.body(new BuddyInfo(name, phoneNumber, address))
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody(Map.class)

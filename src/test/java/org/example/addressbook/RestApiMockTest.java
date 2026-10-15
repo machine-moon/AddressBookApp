@@ -35,12 +35,13 @@ class RestApiMockTest {
 
 		client.post().uri("/buddies")
 				.contentType(MediaType.APPLICATION_JSON)
-				.body("{\"name\":\"Alice\",\"phoneNumber\":\"613-555-0101\"}")
+				.body("{\"name\":\"Alice\",\"phoneNumber\":\"613-555-0101\",\"address\":\"1 First St\"}")
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
 				.jsonPath("$.name").isEqualTo("Alice")
-				.jsonPath("$.phoneNumber").isEqualTo("613-555-0101");
+				.jsonPath("$.phoneNumber").isEqualTo("613-555-0101")
+				.jsonPath("$.address").isEqualTo("1 First St");
 
 		verify(buddies).save(any(BuddyInfo.class));
 	}
@@ -48,8 +49,8 @@ class RestApiMockTest {
 	@Test
 	void getBuddiesReturnsAllBuddies() {
 		when(buddies.findAll()).thenReturn(List.of(
-				new BuddyInfo("Alice", "613-555-0101"),
-				new BuddyInfo("Bob", "613-555-0102")));
+				new BuddyInfo("Alice", "613-555-0101", "1 First St"),
+				new BuddyInfo("Bob", "613-555-0102", "2 Second St")));
 
 		client.get().uri("/buddies")
 				.exchange()
@@ -58,6 +59,7 @@ class RestApiMockTest {
 				.jsonPath("$.length()").isEqualTo(2)
 				.jsonPath("$[0].name").isEqualTo("Alice")
 				.jsonPath("$[0].phoneNumber").isEqualTo("613-555-0101")
+				.jsonPath("$[0].address").isEqualTo("1 First St")
 				.jsonPath("$[1].name").isEqualTo("Bob");
 	}
 
@@ -77,7 +79,7 @@ class RestApiMockTest {
 	@Test
 	void addBuddyToAddressBook() {
 		AddressBook addressBook = new AddressBook();
-		BuddyInfo alice = new BuddyInfo("Alice", "613-555-0101");
+		BuddyInfo alice = new BuddyInfo("Alice", "613-555-0101", "1 First St");
 		when(addressBooks.findById(1L)).thenReturn(Optional.of(addressBook));
 		when(buddies.findById(1L)).thenReturn(Optional.of(alice));
 		when(addressBooks.save(any(AddressBook.class))).thenAnswer((invocation) -> invocation.getArgument(0));
@@ -87,14 +89,15 @@ class RestApiMockTest {
 				.expectStatus().isOk()
 				.expectBody()
 				.jsonPath("$.buddies.length()").isEqualTo(1)
-				.jsonPath("$.buddies[0].name").isEqualTo("Alice");
+				.jsonPath("$.buddies[0].name").isEqualTo("Alice")
+				.jsonPath("$.buddies[0].address").isEqualTo("1 First St");
 	}
 
 	@Test
 	void getAddressBookBuddiesReturnsTheBuddies() {
 		AddressBook addressBook = new AddressBook();
-		addressBook.addBuddy(new BuddyInfo("Alice", "613-555-0101"));
-		addressBook.addBuddy(new BuddyInfo("Bob", "613-555-0102"));
+		addressBook.addBuddy(new BuddyInfo("Alice", "613-555-0101", "1 First St"));
+		addressBook.addBuddy(new BuddyInfo("Bob", "613-555-0102", "2 Second St"));
 		when(addressBooks.findById(1L)).thenReturn(Optional.of(addressBook));
 
 		client.get().uri("/addressBooks/{id}/buddies", 1)
