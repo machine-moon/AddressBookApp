@@ -1,7 +1,7 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /build
 COPY pom.xml .
-RUN mvn -B -ntp dependency:go-offline
+RUN mvn -B -ntp -DskipTests dependency:resolve
 COPY src ./src
 RUN mvn -B -ntp clean package -DskipTests
 

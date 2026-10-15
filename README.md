@@ -2,6 +2,9 @@
 
 Tarek Ibrahim
 
-**Deployed at:** https://addressbook.tarekibrahim.net
+**Deployed on Azure App Service:** https://addressbook.azurewebsites.net
 
-[![CI Status](https://github.com/machine-moon/AddressBookApp/actions/workflows/ci.yml/badge.svg)](https://github.com/machine-moon/AddressBookApp/actions/workflows/ci.yml)
+**Also available at:** https://addressbook.tarekibrahim.net
+
+[![CI](https://github.com/machine-moon/AddressBookApp/actions/workflows/ci.yml/badge.svg)](https://github.com/machine-moon/AddressBookApp/actions/workflows/ci.yml)
+[![Deploy to Azure](https://github.com/machine-moon/AddressBookApp/actions/workflows/master_addressbook.yml/badge.svg)](https://github.com/machine-moon/AddressBookApp/actions/workflows/master_addressbook.yml)
