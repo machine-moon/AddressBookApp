@@ -2,7 +2,7 @@
 
 Tarek Ibrahim
 
-**Deployed on Azure App Service:** https://addressbook.azurewebsites.net
+**Deployed on Azure App Service:** https://addressbook-fwbdfqbtardtbqes.swedencentral-01.azurewebsites.net/
 
 **Also available at:** https://addressbook.tarekibrahim.net
 
